@@ -42,7 +42,8 @@ main {
   padding: 1em;
   color: #FBFBF8;
   background: #FF3814;
-  box-shadow: 0 0 4px 1px var(--shadow);
+  box-shadow: inset -1em 4px 12px 4px tomato,
+              0 0 4px 1px var(--shadow);
 }
 /* Controls */
 figure {
@@ -83,6 +84,7 @@ img {
 }
 
 p, time {
+  width: 1.6rem;
   font-size: 2rem;
   font-family: Digital-7;
 }

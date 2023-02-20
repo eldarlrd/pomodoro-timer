@@ -8,9 +8,6 @@
   <link href="assets/tomato.ico" rel="icon">
   <script src="script.js" defer></script>
   <title>Pomodoro Timer</title>
-  <script>
-    setInterval(() => location.reload(), 1000);
-  </script>
 </head>
 <!-- Container -->
 <body>
@@ -52,18 +49,18 @@
     <!-- Session -->
     <section>
       <!-- Swap innerText -->
-      <h2></h2>
+      <h2>Session</h2>
       <time id="time-left" datetime="mm:ss">25:00</time>
       <span>
         <button id="start_stop">
           <!-- Swap src -->
-          <img id="play_pause">
+          <img id="play_pause" src="assets/icons/play-solid.svg">
         </button>
         <button id="reset">
           <img src="assets/icons/rotate-left-solid.svg">
         </button>
       </span>
-      <!-- Play This -->
+      <!-- Play -->
       <audio id="beep" src="assets/beep.mp3"></audio>
     </section>
   </main>
