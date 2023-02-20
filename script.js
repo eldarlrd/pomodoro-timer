@@ -29,10 +29,20 @@ const increaseTime = elem => {
     : null;
 };
 
-const updateTime = elem => {
-  elem.innerText < 10
-    ? timeLeft.innerText = `0${elem.innerText}:00`
-    : timeLeft.innerText = `${elem.innerText}:00`;
+const updateBreak = elem => {
+  if (mode) {
+    elem.innerText < 10
+      ? timeLeft.innerText = `0${elem.innerText}:00`
+      : timeLeft.innerText = `${elem.innerText}:00`;
+  } else return null;
+};
+
+const updateSession = elem => {
+  if (!mode) {
+    elem.innerText < 10
+      ? timeLeft.innerText = `0${elem.innerText}:00`
+      : timeLeft.innerText = `${elem.innerText}:00`;
+  } else return null;
 };
 
 const countdown = () => {
@@ -41,14 +51,14 @@ const countdown = () => {
   let seconds = 0;
   let minutes = 0;
 
-  setInterval(function() {
+  const timer = setInterval(() => {
     if (prevSeconds > 0 && ticking) {
       prevSeconds--;
       seconds = prevSeconds % 60;
       minutes = Math.floor(prevSeconds / 60);
       updateCounter(prevSeconds, seconds, minutes);
     } else if (!ticking) {
-        clearInterval(this);
+        clearInterval(timer);
   }}, 1000);
 };
 
@@ -77,10 +87,10 @@ const switchMode = () => {
   beep.play();
   if (mode) {
     timeLabel.innerText = "Break";
-    updateTime(breakLength);
+    updateBreak(breakLength);
   } else {
       timeLabel.innerText = "Session";
-      updateTime(sessionLength);
+      updateSession(sessionLength);
     }
 };
 
@@ -91,28 +101,28 @@ const resetTime = () => {
 breakDecrement.addEventListener("click", () => {
   decreaseTime(breakLength);
   updateBreak(breakLength);
-})
+});
 
 breakIncrement.addEventListener("click", () => {
   increaseTime(breakLength);
   updateBreak(breakLength);
-})
+});
 
 sessionDecrement.addEventListener("click", () => {
   decreaseTime(sessionLength);
-  updateTime(sessionLength);
-})
+  updateSession(sessionLength);
+});
 
 sessionIncrement.addEventListener("click", () => {
   increaseTime(sessionLength);
-  updateTime(sessionLength);
-})
+  updateSession(sessionLength);
+});
 
 startStop.addEventListener("click", () => {
   countdown();
   toggleTicking();
-})
+});
 
 reset.addEventListener("click", () => {
   resetTime();
-})
+});
