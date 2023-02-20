@@ -117,8 +117,9 @@ a:hover {
 /* Responsive */
 @media only screen and (max-width: 576px) {
   main {
-    width: 19em;
+    width: 18em;
     height: 17em;
+    border-radius: 9em;
     grid-template-columns: 1fr;
   }
   /* Controls */
@@ -126,6 +127,10 @@ a:hover {
     font-size: 1rem;
     margin-top: 1em;
     margin-bottom: -1em;
+  }
+
+  span {
+    margin-top: 12px;
   }
 
   button {
