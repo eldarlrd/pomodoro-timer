@@ -5,13 +5,75 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="style.css" rel="stylesheet">
-  <link href="assets/favicon.ico" rel="icon">
+  <link href="assets/tomato.ico" rel="icon">
   <script src="script.js" defer></script>
   <title>Pomodoro Timer</title>
+  <script>
+    setInterval(() => location.reload(), 1000);
+  </script>
 </head>
-
+<!-- Container -->
 <body>
+  <header>
+    <h1>Pomodoro Timer</h1>
+  </header>
 
+  <main>
+    <!-- Controls -->
+    <figure id="break">
+      <figcaption id="break-label">
+        Break Time
+      </figcaption>
+      <span>
+        <button id="break-decrement">
+          <img src="assets/icons/chevron-down-solid.svg">
+        </button>
+        <p id="break-length">5</p>
+        <button id="break-increment">
+          <img src="assets/icons/chevron-up-solid.svg">
+        </button>
+      </span>
+    </figure>
+
+    <figure id="session">
+      <figcaption id="session-label">
+        Session Time
+      </figcaption>
+      <span>
+        <button id="session-decrement">
+          <img src="assets/icons/chevron-down-solid.svg">
+        </button>
+        <p id="session-length">25</p>
+        <button id="session-increment">
+          <img src="assets/icons/chevron-up-solid.svg">
+        </button>
+      </span>
+    </figure>
+    <!-- Session -->
+    <section>
+      <!-- Swap innerText -->
+      <h2></h2>
+      <time id="time-left" datetime="mm:ss">25:00</time>
+      <span>
+        <button id="start_stop">
+          <!-- Swap src -->
+          <img id="play_pause">
+        </button>
+        <button id="reset">
+          <img src="assets/icons/rotate-left-solid.svg">
+        </button>
+      </span>
+      <!-- Play This -->
+      <audio id="beep" src="assets/beep.mp3"></audio>
+    </section>
+  </main>
+
+  <footer>
+    by <a target="_blank"
+    rel="noreferrer"
+    href="https://github.com/eldarlrd">
+    eldarlrd</a>
+  </footer>
 </body>
 
 </html>
