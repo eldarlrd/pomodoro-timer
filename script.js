@@ -16,6 +16,7 @@ const reset = document.getElementById("reset");
 const beep = document.getElementById("beep");
 let ticking = false;
 let mode = false;
+let timer = null;
 // Timer
 const decreaseTime = elem => {
   elem.innerText > 1
@@ -51,7 +52,11 @@ const countdown = () => {
   let seconds = 0;
   let minutes = 0;
 
-  const timer = setInterval(() => {
+  if (timer) {
+    clearInterval(timer); // Remove duplicate intervals
+  }
+
+  timer = setInterval(() => {
     if (prevSeconds > 0 && ticking) {
       prevSeconds--;
       seconds = prevSeconds % 60;
