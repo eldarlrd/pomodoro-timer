@@ -77,6 +77,10 @@ button {
 button:active {
   background: var(--dark-red);
 }
+button:disabled {
+  cursor: not-allowed;
+  background: none;
+}
 
 img {
   width: 2em;
