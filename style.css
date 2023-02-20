@@ -9,7 +9,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #D3EEDD;
+  background-size: contain;
+  background-color: #D3EEDD;
+  background-image: url("assets/background.jpg");
   --shadow: #1F1F1F;
   --dark-red: #CC2C10;
 }
@@ -111,4 +113,46 @@ a {
 }
 a:hover {
   color: #3A7439;
+}
+/* Responsive */
+@media only screen and (max-width: 576px) {
+  main {
+    width: 19em;
+    height: 17em;
+    grid-template-columns: 1fr;
+  }
+  /* Controls */
+  figure {
+    font-size: 1rem;
+    margin-top: 1em;
+    margin-bottom: -1em;
+  }
+
+  button {
+    width: 2em;
+    height: 2em;
+  }
+
+  img {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  p, time {
+    font-size: 27px;
+  }
+  /* Session */
+  section {
+    grid-column: 1;
+  }
+
+  h2 {
+    font-size: 19px;
+  }
+}
+
+@media only screen and (max-height: 576px) {
+  :root {
+    padding: 6em;
+  }
 }
