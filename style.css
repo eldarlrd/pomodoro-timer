@@ -117,7 +117,7 @@ a {
   color: var(--shadow);
 }
 a:hover {
-  color: #204F20;
+  color: #105010;
 }
 /* Responsive */
 @media only screen and (max-width: 576px) {
