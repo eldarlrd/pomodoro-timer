@@ -14,7 +14,7 @@
   "source": "index.html",
   "scripts": {
     "dev": "parcel",
-    "build": "parcel build",
+    "build": "parcel build --public-url .",
     "deployer": "pnpm build && gh-pages -b prod -m 'build(prod): deployment' -d dist",
     "lint": "eslint src --flag unstable_ts_config",
     "style": "stylelint 'src/**/*.{css,pcss,scss,sass,less,styl}'",
