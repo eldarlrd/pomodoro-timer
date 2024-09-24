@@ -1,0 +1,23 @@
+{
+  "name": "Pomodoro Timer",
+  "short_name": "Pomodoro Timer",
+  "dir": "ltr",
+  "lang": "en",
+  "categories": [
+    "productivity"
+  ],
+  "display": "minimal-ui",
+  "orientation": "natural",
+  "theme_color": "#ff3814",
+  "background_color": "#d3eedd",
+  "description": "A Pomodoro Timer (25 + 5 Clock)",
+  "start_url": "https://eldarlrd.github.io/pomodoro-timer/",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ]
+}

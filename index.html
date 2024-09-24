@@ -1,76 +1,104 @@
-<!DOCTYPE html>
-<html lang="en">
-<!-- Boilerplate -->
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="style.css" rel="stylesheet">
-  <link href="assets/tomato.ico" rel="icon">
-  <script src="script.js" defer></script>
-  <title>Pomodoro Timer</title>
-</head>
-<!-- Container -->
-<body>
-  <header>
-    <h1>Pomodoro Timer</h1>
-  </header>
+<!doctype html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta name='description' content='A Pomodoro Timer (25 + 5 Clock)'>
+    <meta name='keywords' content='pomodoro-timer, productivity'>
+    <meta name='author' content='Eldar Pashazade'>
+    <meta name='theme-color' content='#ff3814'>
 
-  <main>
-    <!-- Controls -->
-    <figure id="break">
-      <figcaption id="break-label">
-        Break Time
-      </figcaption>
-      <span>
-        <button id="break-decrement" title="Decrement Break Time">
-          <img src="assets/icons/chevron-down-solid.svg">
-        </button>
-        <p id="break-length">5</p>
-        <button id="break-increment" title="Increment Break Time">
-          <img src="assets/icons/chevron-up-solid.svg">
-        </button>
-      </span>
-    </figure>
+    <meta property='og:type' content='website'>
+    <meta property='og:title' content='Pomodoro Timer'>
+    <meta property='og:description' content='A Pomodoro Timer (25 + 5 Clock)'>
+    <meta property='og:url' content='https://eldarlrd.github.io/pomodoro-timer'>
+    <meta property='og:image'
+      content='https://repository-images.githubusercontent.com/603558121/d63c1097-d0c8-4839-99eb-56693b25cc13'>
+    <meta property='og:image:type' content='image/png'>
+    <meta property='og:image:width' content='1280'>
+    <meta property='og:image:height' content='640'>
 
-    <figure id="session">
-      <figcaption id="session-label">
-        Session Time
-      </figcaption>
-      <span>
-        <button id="session-decrement" title="Decrement Session Time">
-          <img src="assets/icons/chevron-down-solid.svg">
-        </button>
-        <p id="session-length">25</p>
-        <button id="session-increment" title="Increment Session Time">
-          <img src="assets/icons/chevron-up-solid.svg">
-        </button>
-      </span>
-    </figure>
-    <!-- Session -->
-    <section>
-      <!-- Swap innerText -->
-      <h2 id="timer-label">Session</h2>
-      <time id="time-left" datetime="mm:ss">25:00</time>
-      <span>
-        <button id="start_stop" title="Start/Stop the Timer">
-          <!-- Swap src -->
-          <img id="play_pause" src="assets/icons/play-solid.svg">
-        </button>
-        <button id="reset" title="Reset the Timer">
-          <img src="assets/icons/rotate-left-solid.svg">
-        </button>
-      </span>
-      <!-- Play -->
-      <audio id="beep" src="assets/beep.mp3"></audio>
-    </section>
-  </main>
+    <link rel='preconnect' type='text/xml' crossorigin='anonymous'
+      href='https://kit.fontawesome.com'>
+    <link rel='manifest' type='application/manifest+json' href='public/site.webmanifest'>
+    <link rel='icon' type='image/png' sizes='512x512' href='public/favicon.png'>
+    <link rel='stylesheet' type='text/css' href='src/styles.css'>
+    <title>Pomodoro Timer</title>
+  </head>
 
-  <footer>
-    by <a target="_blank"
-    rel="noreferrer"
-    href="https://github.com/eldarlrd">
-    eldarlrd</a>
-  </footer>
-</body>
+  <body>
+    <header>
+      <h1>Pomodoro Timer</h1>
+    </header>
+
+    <main>
+      <figure id='break'>
+        <figcaption id='break-label'>
+          Break Time
+        </figcaption>
+
+        <span>
+          <button id='break-decrement' title='Decrement Break Time'>
+            <i class='fa-solid fa-chevron-down fa-fw fa-2xl'>
+          </button>
+          <p id='break-length'>5</p>
+          <button id='break-increment' class='increment' title='Increment Break Time'>
+            <i class='fa-solid fa-chevron-down fa-fw fa-2xl'>
+          </button>
+        </span>
+      </figure>
+
+      <figure id='session'>
+        <figcaption id='session-label'>
+          Session Time
+        </figcaption>
+
+        <span>
+          <button id='session-decrement' title='Decrement Session Time'>
+            <i class='fa-solid fa-chevron-down fa-fw fa-2xl'>
+          </button>
+          <p id='session-length'>25</p>
+          <button id='session-increment' class='increment' title='Increment Session Time'>
+            <i class='fa-solid fa-chevron-down fa-fw fa-2xl'>
+          </button>
+        </span>
+      </figure>
+
+      <section>
+        <!-- Swap innerText -->
+        <h2 id='time-label'>Session</h2>
+        <time id='time-left' datetime='mm:ss'>25:00</time>
+
+        <span>
+          <button id='start-stop' title='Start Timer'>
+            <!-- Swap src -->
+            <i id='play-pause' class='fa-solid fa-play fa-fw fa-2xl'>
+          </button>
+          <button id='reset' title='Reset Timer'>
+            <i class='fa-solid fa-rotate-left fa-fw fa-2xl'>
+          </button>
+        </span>
+
+        <!-- Play -->
+        <audio id='alarm' src='src/assets/sfx/alarm.opus'></audio>
+      </section>
+    </main>
+
+    <footer>
+      © 2023 - 2024
+      <a
+        title='Source'
+        target='_blank'
+        type='text/html'
+        rel='author external noreferrer'
+        href='https://github.com/eldarlrd/pomodoro-timer'>
+        eldarlrd
+      </a>
+    </footer>
+
+    <script type='module' src='src/main.ts'></script>
+    <script type='text/javascript' crossorigin='anonymous'
+      src='https://kit.fontawesome.com/0db9b2eb32.js'></script>
+  </body>
 
 </html>
