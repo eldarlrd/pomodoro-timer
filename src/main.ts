@@ -18,212 +18,189 @@
  * along with Pomodoro Timer. If not, see <https://www.gnu.org/licenses/>.
  */
 
-const breakDecrement = document.getElementById(
-  'break-decrement'
-) as HTMLButtonElement;
-const breakIncrement = document.getElementById(
-  'break-increment'
-) as HTMLButtonElement;
-const breakLength = document.getElementById(
-  'break-length'
-) as HTMLParagraphElement;
+const initialState = {
+  breakLength: '5',
+  sessionLength: '25',
+  timeLeft: '25:00'
+};
 
-const sessionDecrement = document.getElementById(
-  'session-decrement'
-) as HTMLButtonElement;
-const sessionIncrement = document.getElementById(
-  'session-increment'
-) as HTMLButtonElement;
-const sessionLength = document.getElementById(
-  'session-length'
-) as HTMLParagraphElement;
+const elements = {
+  playPause: document.getElementById('play-pause'),
+  startStop: document.getElementById('start-stop') as HTMLButtonElement,
+  reset: document.getElementById('reset') as HTMLButtonElement,
+  alarm: document.getElementById('alarm') as HTMLAudioElement,
 
-const playPause = document.getElementById('play-pause');
-const timeLabel = document.getElementById('time-label') as HTMLHeadingElement;
-const timeLeft = document.getElementById('time-left') as HTMLTimeElement;
-const startStop = document.getElementById('start-stop') as HTMLButtonElement;
-const reset = document.getElementById('reset') as HTMLButtonElement;
-const alarm = document.getElementById('alarm') as HTMLAudioElement;
+  timeLeft: document.getElementById('time-left') as HTMLTimeElement,
+  timeLabel: document.getElementById('time-label') as HTMLHeadingElement,
+
+  breakDecrement: document.getElementById(
+    'break-decrement'
+  ) as HTMLButtonElement,
+  breakIncrement: document.getElementById(
+    'break-increment'
+  ) as HTMLButtonElement,
+  breakLength: document.getElementById('break-length') as HTMLParagraphElement,
+
+  sessionDecrement: document.getElementById(
+    'session-decrement'
+  ) as HTMLButtonElement,
+  sessionIncrement: document.getElementById(
+    'session-increment'
+  ) as HTMLButtonElement,
+  sessionLength: document.getElementById(
+    'session-length'
+  ) as HTMLParagraphElement
+};
+
 let ticking = false;
 let mode = false;
 let timer: number;
 
-const decreaseTime = (elem: HTMLElement): number =>
-  +elem.innerText > 1 ? (elem.innerText as unknown as number)-- : 0;
+const setTimeToStorage = (key: string, value: string): void => {
+  localStorage.setItem(key, value);
+};
 
-const increaseTime = (elem: HTMLElement): number =>
-  +elem.innerText < 60 ? (elem.innerText as unknown as number)++ : 0;
+const getTimeFromStorage = (key: string, defaultValue: string): string =>
+  localStorage.getItem(key) ?? defaultValue;
 
-const updateTimer = (elem: HTMLElement): string => {
-  const minutes = +elem.innerText;
+const changeTime = (elem: HTMLElement, delta: number, max: number): void => {
+  const newTime = Math.min(Math.max(+elem.innerText + delta, 1), max);
+  elem.innerText = newTime.toString();
+};
 
-  localStorage.setItem(
-    'timeLeft',
-    `${minutes < 10 ? '0' : ''}${minutes.toString()}:00`
-  );
-
-  return (timeLeft.innerText = `${minutes < 10 ? '0' : ''}${minutes.toString()}:00`);
+const updateTimer = (minutes: number, seconds = 0): void => {
+  const formattedTime = `${minutes < 10 ? '0' : ''}${minutes.toString()}:${seconds < 10 ? '0' : ''}${seconds.toString()}`;
+  elements.timeLeft.innerText = formattedTime;
+  setTimeToStorage('timeLeft', formattedTime);
 };
 
 const countdown = (): void => {
-  let prevSeconds: number;
-  const timeArr = timeLeft.innerText.split(':');
+  const timeArr = elements.timeLeft.innerText.split(':');
+  let prevSeconds = +timeArr[0] * 60 + +timeArr[1];
 
-  prevSeconds = +timeArr[0] * 60 + +timeArr[1];
-
-  let seconds = 0;
-  let minutes = 0;
-
-  if (timer) clearInterval(timer); // Remove duplicate intervals
+  clearInterval(timer); // Remove duplicate intervals
 
   timer = setInterval(() => {
     if (prevSeconds > 0 && ticking) {
       prevSeconds--;
-      seconds = prevSeconds % 60;
-      minutes = ~~(prevSeconds / 60);
-      updateCounter(prevSeconds, seconds, minutes);
-
-      localStorage.setItem(
-        'timeLeft',
-        `${minutes < 10 ? '0' : ''}${minutes.toString()}:${seconds < 10 ? '0' : ''}${seconds.toString()}`
-      );
-    } else if (!ticking) clearInterval(timer);
+      const minutes = ~~(prevSeconds / 60);
+      const seconds = prevSeconds % 60;
+      updateTimer(minutes, seconds);
+    } else {
+      clearInterval(timer);
+      if (prevSeconds === 0) {
+        switchMode();
+        countdown();
+      }
+    }
   }, 1000);
 };
 
-const updateCounter = (
-  prevSeconds: number,
-  seconds: number,
-  minutes: number
-): string => {
-  if (prevSeconds === 0) {
-    mode = !mode;
-    switchMode();
-    countdown();
-  }
+const switchMode = (): void => {
+  mode = !mode;
+  void elements.alarm.play();
+  setTimeToStorage('mode', JSON.stringify(mode));
 
-  return (timeLeft.innerText = `${minutes < 10 ? '0' : ''}${minutes.toString()}:${('0' + seconds.toString()).slice(-2)}`);
+  const label = mode ? 'Break' : 'Session';
+  const time = mode ? elements.breakLength : elements.sessionLength;
+
+  elements.timeLabel.innerText = label;
+  updateTimer(+time.innerText);
 };
 
 const toggleTicking = (): void => {
   ticking = !ticking;
-  breakDecrement.disabled = !breakDecrement.disabled;
-  breakIncrement.disabled = !breakIncrement.disabled;
-  sessionDecrement.disabled = !sessionDecrement.disabled;
-  sessionIncrement.disabled = !sessionIncrement.disabled;
+  [
+    elements.breakDecrement,
+    elements.breakIncrement,
+    elements.sessionDecrement,
+    elements.sessionIncrement
+  ].forEach(button => (button.disabled = ticking));
 
-  if (playPause)
-    if (ticking) {
-      playPause.classList.remove('fa-play');
-      playPause.classList.add('fa-pause');
-      playPause.title = 'Stop Timer';
-    } else {
-      playPause.classList.remove('fa-pause');
-      playPause.classList.add('fa-play');
-      playPause.title = 'Start Timer';
-    }
-};
-
-const switchMode = (): void => {
-  void alarm.play();
-
-  localStorage.setItem('mode', JSON.stringify(mode));
-
-  if (mode) {
-    timeLabel.innerText = 'Break';
-    updateTimer(breakLength);
-  } else {
-    timeLabel.innerText = 'Session';
-    updateTimer(sessionLength);
+  if (elements.playPause) {
+    elements.playPause.classList.toggle('fa-play', !ticking);
+    elements.playPause.classList.toggle('fa-pause', ticking);
+    elements.playPause.title = ticking ? 'Stop Timer' : 'Start Timer';
   }
 };
 
 const resetTime = (): void => {
-  if (timer) clearInterval(timer);
-
-  localStorage.removeItem('timeLeft');
-  localStorage.removeItem('sessionLength');
-  localStorage.removeItem('breakLength');
-  localStorage.removeItem('mode');
+  clearInterval(timer);
+  ['timeLeft', 'breakLength', 'sessionLength', 'mode'].forEach(key => {
+    localStorage.removeItem(key);
+  });
 
   ticking = false;
   mode = false;
 
-  sessionLength.innerText = '25';
-  breakLength.innerText = '5';
-  timeLeft.innerText = '25:00';
-  timeLabel.innerText = 'Session';
+  elements.breakLength.innerText = initialState.breakLength;
+  elements.sessionLength.innerText = initialState.sessionLength;
+  elements.timeLeft.innerText = initialState.timeLeft;
+  elements.timeLabel.innerText = 'Session';
 
-  if (playPause) {
-    playPause.classList.remove('fa-pause');
-    playPause.classList.add('fa-play');
-    playPause.title = 'Start Timer';
+  if (elements.playPause) {
+    elements.playPause.classList.remove('fa-pause');
+    elements.playPause.classList.add('fa-play');
+    elements.playPause.title = 'Start Timer';
   }
 
-  breakDecrement.disabled = false;
-  breakIncrement.disabled = false;
-  sessionDecrement.disabled = false;
-  sessionIncrement.disabled = false;
-
-  alarm.pause();
-  alarm.currentTime = 0;
+  elements.alarm.pause();
+  elements.alarm.currentTime = 0;
 };
 
 const loadStorage = (): void => {
-  const savedTimeLeft = localStorage.getItem('timeLeft');
-  const savedSessionLength = localStorage.getItem('sessionLength');
-  const savedBreakLength = localStorage.getItem('breakLength');
-  const savedMode = localStorage.getItem('mode');
-
-  if (savedTimeLeft) timeLeft.innerText = savedTimeLeft;
-  else timeLeft.innerText = '25:00';
-
-  if (savedSessionLength) sessionLength.innerText = savedSessionLength;
-  else sessionLength.innerText = '25';
-
-  if (savedBreakLength) breakLength.innerText = savedBreakLength;
-  else breakLength.innerText = '5';
-
-  if (savedMode) {
-    mode = JSON.parse(savedMode) as boolean;
-    timeLabel.innerText = mode ? 'Break' : 'Session';
-  } else {
-    mode = false;
-    timeLabel.innerText = 'Session';
-  }
+  elements.breakLength.innerText = getTimeFromStorage(
+    'breakLength',
+    initialState.breakLength
+  );
+  elements.sessionLength.innerText = getTimeFromStorage(
+    'sessionLength',
+    initialState.sessionLength
+  );
+  elements.timeLeft.innerText = getTimeFromStorage(
+    'timeLeft',
+    initialState.timeLeft
+  );
+  mode = JSON.parse(getTimeFromStorage('mode', 'false')) as boolean;
+  elements.timeLabel.innerText = mode ? 'Break' : 'Session';
 };
 
-breakDecrement.addEventListener('click', () => {
-  decreaseTime(breakLength);
-  localStorage.setItem('breakLength', breakLength.innerText);
-  if (mode) updateTimer(breakLength);
-});
+const setupListeners = (): void => {
+  elements.breakDecrement.addEventListener('click', () => {
+    changeTime(elements.breakLength, -1, 60);
+    setTimeToStorage('breakLength', elements.breakLength.innerText);
+    if (mode) updateTimer(+elements.breakLength.innerText);
+  });
 
-breakIncrement.addEventListener('click', () => {
-  increaseTime(breakLength);
-  localStorage.setItem('breakLength', breakLength.innerText);
-  if (mode) updateTimer(breakLength);
-});
+  elements.breakIncrement.addEventListener('click', () => {
+    changeTime(elements.breakLength, 1, 60);
+    setTimeToStorage('breakLength', elements.breakLength.innerText);
+    if (mode) updateTimer(+elements.breakLength.innerText);
+  });
 
-sessionDecrement.addEventListener('click', () => {
-  decreaseTime(sessionLength);
-  localStorage.setItem('sessionLength', sessionLength.innerText);
-  if (!mode) updateTimer(sessionLength);
-});
+  elements.sessionDecrement.addEventListener('click', () => {
+    changeTime(elements.sessionLength, -1, 60);
+    setTimeToStorage('sessionLength', elements.sessionLength.innerText);
+    if (!mode) updateTimer(+elements.sessionLength.innerText);
+  });
 
-sessionIncrement.addEventListener('click', () => {
-  increaseTime(sessionLength);
-  localStorage.setItem('sessionLength', sessionLength.innerText);
-  if (!mode) updateTimer(sessionLength);
-});
+  elements.sessionIncrement.addEventListener('click', () => {
+    changeTime(elements.sessionLength, 1, 60);
+    setTimeToStorage('sessionLength', elements.sessionLength.innerText);
+    if (!mode) updateTimer(+elements.sessionLength.innerText);
+  });
 
-startStop.addEventListener('click', () => {
-  countdown();
-  toggleTicking();
-});
+  elements.startStop.addEventListener('click', () => {
+    countdown();
+    toggleTicking();
+  });
 
-reset.addEventListener('click', () => {
-  resetTime();
-});
+  elements.reset.addEventListener('click', resetTime);
+};
 
-loadStorage();
+const main = (): void => {
+  loadStorage();
+  setupListeners();
+};
+
+main();

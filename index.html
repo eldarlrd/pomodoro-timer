@@ -34,48 +34,58 @@
     <main>
       <figure id='break'>
         <figcaption id='break-label'>
-          Break Time
+          <i class='fa-solid fa-couch fa-fw fa-sm'></i>
+          Break
         </figcaption>
 
         <span>
           <button id='break-decrement' title='Decrement Break Time'>
-            <i class='fa-solid fa-chevron-down fa-fw fa-2xl'>
+            <i class='fa-solid fa-chevron-down fa-fw fa-2xl'></i>
           </button>
           <p id='break-length'>5</p>
           <button id='break-increment' class='increment' title='Increment Break Time'>
-            <i class='fa-solid fa-chevron-down fa-fw fa-2xl'>
+            <i class='fa-solid fa-chevron-down fa-fw fa-2xl'></i>
           </button>
         </span>
       </figure>
 
       <figure id='session'>
         <figcaption id='session-label'>
-          Session Time
+          <i class='fa-solid fa-computer fa-fw fa-sm'></i>
+          Session
         </figcaption>
 
         <span>
           <button id='session-decrement' title='Decrement Session Time'>
-            <i class='fa-solid fa-chevron-down fa-fw fa-2xl'>
+            <i class='fa-solid fa-chevron-down fa-fw fa-2xl'></i>
           </button>
           <p id='session-length'>25</p>
           <button id='session-increment' class='increment' title='Increment Session Time'>
-            <i class='fa-solid fa-chevron-down fa-fw fa-2xl'>
+            <i class='fa-solid fa-chevron-down fa-fw fa-2xl'></i>
           </button>
         </span>
       </figure>
 
       <section>
-        <!-- Swap innerText -->
-        <h2 id='time-label'>Session</h2>
-        <time id='time-left' datetime='mm:ss'>25:00</time>
+        <h2>
+          <i class='fa-solid fa-clock fa-fw fa-sm'></i>
+          <!-- Swap innerText -->
+          <span id='time-label'>
+            Session
+          </span>
+        </h2>
+
+        <time id='time-left' datetime='mm:ss'>
+          25:00
+        </time>
 
         <span>
           <button id='start-stop' title='Start Timer'>
             <!-- Swap src -->
-            <i id='play-pause' class='fa-solid fa-play fa-fw fa-2xl'>
+            <i id='play-pause' class='fa-solid fa-play fa-fw fa-2xl'></i>
           </button>
           <button id='reset' title='Reset Timer'>
-            <i class='fa-solid fa-rotate-left fa-fw fa-2xl'>
+            <i class='fa-solid fa-rotate-left fa-fw fa-2xl'></i>
           </button>
         </span>
 

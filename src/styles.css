@@ -36,44 +36,44 @@ body {
   flex-direction: column;
   font-family: Poppins, sans-serif;
   text-shadow: 2px 2px 1px var(--shadow);
-  gap: 8px;
+  gap: .5rem;
 }
 
 header {
-  height: 3em;
+  height: 3rem;
   line-height: 0;
   color: var(--green);
 }
 
 main {
-  width: 18em;
-  height: 17em;
-  margin: 0 1em;
-  padding: 1em;
+  width: 18rem;
+  height: 17rem;
+  margin: 0 1rem;
+  padding: 1rem;
   display: grid;
-  border-radius: 9em;
+  border-radius: 9rem;
   color: var(--white);
   grid-template-columns: 1fr;
   background: var(--tomato);
   box-shadow:
-    inset -1em 4px 12px 4px tomato,
-    0 0 4px 1px var(--shadow);
+    inset -1rem .25rem .75rem .25rem tomato,
+    0 0 .25rem 1px var(--shadow);
 }
 
 figure {
   line-height: 0;
   font-weight: bold;
   font-size: 1rem;
-  margin-top: 1em;
-  margin-bottom: -1em;
+  margin-top: 1rem;
+  margin-bottom: -1rem;
 }
 
-span {
+span:not(#time-label) {
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: normal;
-  margin-top: 12px;
+  margin-top: .75rem;
   gap: 1rem;
 }
 
@@ -85,8 +85,8 @@ button {
   background: none;
   cursor: pointer;
   outline: none;
-  width: 2em;
-  height: 2em;
+  width: 2rem;
+  height: 2rem;
   border: 0;
 }
 
@@ -100,7 +100,7 @@ button:disabled {
 }
 
 i {
-  color: #fbfbf8;
+  color: var(--white);
   transform: scale(.875);
 }
 
@@ -126,7 +126,7 @@ h2 {
 }
 
 time {
-  font-size: 3rem;
+  font-size: 2rem;
 }
 
 footer {
@@ -147,9 +147,9 @@ a:hover {
 
 @media (min-width: 36rem) {
   main {
-    width: 32em;
-    height: 24em;
-    border-radius: 13em;
+    width: 32rem;
+    height: 24rem;
+    border-radius: 13rem;
     grid-template-columns: 1fr 1fr;
   }
 
@@ -159,13 +159,13 @@ a:hover {
     margin-bottom: 0;
   }
 
-  span {
+  span:not(#time-label) {
     margin-top: 1rem;
   }
 
   button {
-    width: 36px;
-    height: 36px;
+    width: 2.25rem;
+    height: 2.25rem;
   }
 
   i {
@@ -177,17 +177,21 @@ a:hover {
     font-size: 2rem;
   }
 
+  time {
+    font-size: 3rem;
+  }
+
   section {
     grid-column: 1 / span 2;
   }
 
   h2 {
-    font-size: 1.5em;
+    font-size: 1.5rem;
   }
 }
 
 @media (max-height: 36rem) {
   :root {
-    padding: 6em;
+    padding: 6rem;
   }
 }
