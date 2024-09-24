@@ -54,14 +54,15 @@ const decreaseTime = (elem: HTMLElement): number =>
 const increaseTime = (elem: HTMLElement): number =>
   +elem.innerText < 60 ? (elem.innerText as unknown as number)++ : 0;
 
-const updateTimer = (elem: HTMLElement): string | undefined => {
-  const minutes = elem.innerText;
+const updateTimer = (elem: HTMLElement): string => {
+  const minutes = +elem.innerText;
 
-  localStorage.setItem('timeLeft', `${minutes}:00`);
+  localStorage.setItem(
+    'timeLeft',
+    `${minutes < 10 ? '0' : ''}${minutes.toString()}:00`
+  );
 
-  return +elem.innerText < 10 ?
-      (timeLeft.innerText = `0${elem.innerText}:00`)
-    : (timeLeft.innerText = `${elem.innerText}:00`);
+  return (timeLeft.innerText = `${minutes < 10 ? '0' : ''}${minutes.toString()}:00`);
 };
 
 const countdown = (): void => {
@@ -84,7 +85,7 @@ const countdown = (): void => {
 
       localStorage.setItem(
         'timeLeft',
-        `${minutes.toString()}:${seconds < 10 ? '0' : ''}${seconds.toString()}`
+        `${minutes < 10 ? '0' : ''}${minutes.toString()}:${seconds < 10 ? '0' : ''}${seconds.toString()}`
       );
     } else if (!ticking) clearInterval(timer);
   }, 1000);
@@ -94,16 +95,14 @@ const updateCounter = (
   prevSeconds: number,
   seconds: number,
   minutes: number
-): string | undefined => {
+): string => {
   if (prevSeconds === 0) {
     mode = !mode;
     switchMode();
     countdown();
   }
 
-  return minutes < 10 ?
-      (timeLeft.innerText = `0${minutes.toString()}:${('0' + seconds.toString()).slice(-2)}`)
-    : (timeLeft.innerText = `${minutes.toString()}:${('0' + seconds.toString()).slice(-2)}`);
+  return (timeLeft.innerText = `${minutes < 10 ? '0' : ''}${minutes.toString()}:${('0' + seconds.toString()).slice(-2)}`);
 };
 
 const toggleTicking = (): void => {
@@ -127,6 +126,9 @@ const toggleTicking = (): void => {
 
 const switchMode = (): void => {
   void alarm.play();
+
+  localStorage.setItem('mode', JSON.stringify(mode));
+
   if (mode) {
     timeLabel.innerText = 'Break';
     updateTimer(breakLength);
@@ -142,13 +144,13 @@ const resetTime = (): void => {
   localStorage.removeItem('timeLeft');
   localStorage.removeItem('sessionLength');
   localStorage.removeItem('breakLength');
+  localStorage.removeItem('mode');
 
   ticking = false;
   mode = false;
 
   sessionLength.innerText = '25';
   breakLength.innerText = '5';
-
   timeLeft.innerText = '25:00';
   timeLabel.innerText = 'Session';
 
@@ -171,6 +173,7 @@ const loadStorage = (): void => {
   const savedTimeLeft = localStorage.getItem('timeLeft');
   const savedSessionLength = localStorage.getItem('sessionLength');
   const savedBreakLength = localStorage.getItem('breakLength');
+  const savedMode = localStorage.getItem('mode');
 
   if (savedTimeLeft) timeLeft.innerText = savedTimeLeft;
   else timeLeft.innerText = '25:00';
@@ -180,6 +183,14 @@ const loadStorage = (): void => {
 
   if (savedBreakLength) breakLength.innerText = savedBreakLength;
   else breakLength.innerText = '5';
+
+  if (savedMode) {
+    mode = JSON.parse(savedMode) as boolean;
+    timeLabel.innerText = mode ? 'Break' : 'Session';
+  } else {
+    mode = false;
+    timeLabel.innerText = 'Session';
+  }
 };
 
 breakDecrement.addEventListener('click', () => {
